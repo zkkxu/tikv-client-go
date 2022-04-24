@@ -67,6 +67,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/encoding/gzip"
+	"google.golang.org/grpc/encoding/lz4"
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/metadata"
 )
@@ -171,7 +172,10 @@ func (a *connArray) Init(addr string, security config.Security, idleNotify *uint
 		callOptions = append(callOptions, grpc.MaxCallRecvMsgSize(MaxRecvMsgSize))
 		if cfg.TiKVClient.GrpcCompressionType == gzip.Name {
 			callOptions = append(callOptions, grpc.UseCompressor(gzip.Name))
+		} else if cfg.TiKVClient.GrpcCompressionType == lz4.Name {
+			callOptions = append(callOptions, grpc.UseCompressor(lz4.Name))
 		}
+
 		conn, err := grpc.DialContext(
 			ctx,
 			addr,
