@@ -34,4 +34,4 @@ require (
 	google.golang.org/grpc v1.43.0
 )
 
-replace google.golang.org/grpc => github.com/zkkxu/grpc-go v1.47.1
+replace google.golang.org/grpc => github.com/zkkxu/grpc-go v1.47.3

@@ -40,6 +40,8 @@ import (
 
 	"google.golang.org/grpc/encoding/gzip"
 	"google.golang.org/grpc/encoding/lz4"
+	"google.golang.org/grpc/encoding/snappy"
+	"google.golang.org/grpc/encoding/zstd"
 )
 
 const (
@@ -161,7 +163,10 @@ func (config *TiKVClient) Valid() error {
 	if config.GrpcConnectionCount == 0 {
 		return fmt.Errorf("grpc-connection-count should be greater than 0")
 	}
-	if config.GrpcCompressionType != "none" && config.GrpcCompressionType != gzip.Name  && config.GrpcCompressionType != lz4.Name{
+	if config.GrpcCompressionType != "none" && config.GrpcCompressionType != gzip.Name &&
+		config.GrpcCompressionType != lz4.Name &&
+		config.GrpcCompressionType != snappy.Name &&
+		config.GrpcCompressionType != zstd.Name {
 		return fmt.Errorf("grpc-compression-type should be none or %s, but got %s", gzip.Name, config.GrpcCompressionType)
 	}
 	return nil
